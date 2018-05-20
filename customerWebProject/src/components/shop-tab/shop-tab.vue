@@ -7,10 +7,12 @@
     <mt-tab-item id="3">商家</mt-tab-item>
   </mt-navbar>
 
-  <!-- tab-container -->
+  <!-- 设置每个tab对应的内容 -->
   <mt-tab-container v-model="selected">
     <mt-tab-container-item id="1">
       <index-list></index-list>
+      <!-- 购物车，总价及结算按钮 -->
+      <cart-footer></cart-footer>
     </mt-tab-container-item>
     <mt-tab-container-item id="2">
       <mt-cell v-for="n in 4" :title="'测试 ' + n" v-bind:key = n></mt-cell>
@@ -23,23 +25,35 @@
 </template>
 
 <script>
-import indexList from '@/components/index-list/food-list'
+import indexList from '@/components/food-list/food-list'
+import cartFooter from '@/components/cart-footer/cart-footer'
 export default {
   name: 'page-navbar',
   components: {
-    indexList
+    indexList,
+    cartFooter
   },
   data () {
     return {
       selected: '1'
     }
-  }
+  },
+  props: {}
 }
 </script>
 
-<style>
+<style scope>
   /* 选项卡字体 */
   .mint-tab-item-label {
-      font-size: 1.0rem;
+    font-size: 1.0rem;
+    line-height: 1vh;
+  }
+  /* 选项卡大小 */
+  .mint-navbar {
+    height: 6vh;
+  }
+  /* 选项卡对应内容窗口大小 */
+  .mint-indexlist {
+    height: 63vh;
   }
 </style>

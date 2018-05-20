@@ -6,24 +6,25 @@
         <!-- 搜索框 -->
         <search id="search-bar"></search>
         <!-- 顶部选项卡 -->
-        <navbar id="nav-bar"></navbar>
+        <shop-tab id="shop-tab"></shop-tab>
     </div>
 </template>
 <script>
 import pageHeader from '@/components/page-header/page-header'
 import search from '@/components/search-bar/search-bar'
-import navbar from '@/components/navbar/navbar'
-import indexList from '@/components/index-list/food-list'
+import shopTab from '@/components/shop-tab/shop-tab'
+import indexList from '@/components/food-list/food-list'
 export default {
   components: {
     pageHeader,
     search,
-    navbar,
+    shopTab,
     indexList
   }
 }
 </script>
-<style>
+
+<style scope>
   /* 搜索框位置 */
   #search-bar {
     position: absolute;
@@ -32,12 +33,12 @@ export default {
     width: 100%;
     height: 4%;
     /* 仅为标记，待删 */
-    border: 1px solid #DDDDDD;
+    /* border: 1px solid #DDDDDD; */
   }
   /* 顶部选项卡位置 */
-  #nav-bar {
+  #shop-tab {
     position: absolute;
-    top: 24%;
+    top: 24vh;
     left: 0;
     width: 100%;
     /* 仅为标记，待删 */

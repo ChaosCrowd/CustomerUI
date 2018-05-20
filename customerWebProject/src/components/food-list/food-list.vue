@@ -23,37 +23,51 @@
     <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="折扣">
-    <mt-cell title="Baldwin"></mt-cell>
-    <mt-cell title="Braden"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="买赠">
-    <mt-cell title="Zack"></mt-cell>
-    <mt-cell title="Zane"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="精选套餐">
-    <mt-cell title="Zack"></mt-cell>
-    <mt-cell title="Zane"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="精选热菜">
-    <mt-cell title="Zack"></mt-cell>
-    <mt-cell title="Zane"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="主食">
-    <mt-cell title="Zack"></mt-cell>
-    <mt-cell title="Zane"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="甜点">
-    <mt-cell title="Zack"></mt-cell>
-    <mt-cell title="Zane"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
   <mt-index-section index="饮料">
-    <mt-cell title="Zack"></mt-cell>
-    <mt-cell title="Zane"></mt-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
+    <food-cell></food-cell>
   </mt-index-section>
 </mt-index-list>
 
 </template>
-<style>
+<style scope>
   /* 设置侧边索引（栏目） */
   .mint-indexlist-nav {
     left: 0;
@@ -61,7 +75,7 @@
     width: 20%;
   }
   .mint-indexlist-navitem {
-    padding: 4.666667vw 2vw;
+    padding: 2.5vh 2vw;
     font-size: 0.85rem;
     /* 标明边界 */
     border: 1px solid #DDDDDD;
@@ -74,6 +88,7 @@
   .mint-indexlist-content {
     position: relative;
     left: 20%;
+    height: 100% !important;
   }
   /* 列表中的索引 */
   .mint-indexsection-index {
