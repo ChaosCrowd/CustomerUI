@@ -1,7 +1,7 @@
 <!-- 餐厅首页食物列表中的每个食物选项 -->
 <template>
   <mt-cell title="皮蛋瘦肉粥" label="月售888 好评率100%" id="food-cell">
-    <img slot="icon" src="@/assets/皮蛋瘦肉粥.jpeg" id="food-icon">
+    <img slot="icon" src="@/assets/皮蛋瘦肉粥.jpeg" id="food-icon" @click="showinfo">
     <span id="food-price">￥10</span>
     <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="foodNumber -= 1" v-if="foodNumber > 0">
     <span id="food-number" v-if="foodNumber > 0">{{ foodNumber }}</span>
@@ -14,6 +14,11 @@ export default {
   data () {
     return {
       foodNumber: 0
+    }
+  },
+  methods: {
+    showinfo () {
+      this.$router.push('/foodinfo')
     }
   }
 }

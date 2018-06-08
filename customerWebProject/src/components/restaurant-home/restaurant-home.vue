@@ -27,7 +27,7 @@ export default {
 <style scope>
   /* 搜索框位置 */
   #search-bar {
-    position: absolute;
+    position: fixed;
     top: 20%;
     left: 0;
     width: 100%;

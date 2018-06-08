@@ -1,17 +1,44 @@
 <!-- 底部总价和结算区 -->
 <template>
   <div id="bottom-bar">
+    <cartlist v-if="flag"></cartlist>
     <div id="bottom-bar-left">
-      <span id="cart-button">
-          <span id="food-total-number">1</span>
+      <span id="cart-button" @click="showlist">
+        <span id="food-total-number">5</span>
       </span>
       <span id="food-total-price">￥0</span>
     </div>
-    <div id="bottom-bar-right">
+    <div id="bottom-bar-right" @click="pay">
       <span id="cart-balance">结算</span>
     </div>
   </div>
 </template>
+
+<script>
+import cartlist from '@/components/cart-list/cart-list'
+export default {
+  data () {
+    return {
+      flag: false
+    }
+  },
+  methods: {
+    showlist () {
+      if (this.flag) {
+        this.flag = false
+      } else {
+        this.flag = true
+      }
+    },
+    pay () {
+      this.$router.push('/pagepay')
+    }
+  },
+  components: {
+    cartlist
+  }
+}
+</script>
 
 <style scope>
   #bottom-bar {
