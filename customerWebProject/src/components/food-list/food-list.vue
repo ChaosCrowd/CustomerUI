@@ -1,72 +1,12 @@
 <!-- 菜品列表 -->
 <template>
   <mt-index-list :show-indicator=false>
-  <mt-index-section index="热销">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="折扣">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="买赠">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="精选套餐">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="精选热菜">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="主食">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="甜点">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-  <mt-index-section index="饮料">
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-    <food-cell></food-cell>
-  </mt-index-section>
-</mt-index-list>
-
+    <mt-index-section v-for="item in menuData" :index="item.category.name" :key="item.category.id">
+      <food-cell v-for="good in item.goods" :key="good.id" v-bind="good"></food-cell>
+    </mt-index-section>
+  </mt-index-list>
 </template>
+
 <style scope>
   /* 设置侧边索引（栏目） */
   .mint-indexlist-nav {
@@ -101,8 +41,28 @@
 <script>
 import foodCell from '@/components/food-cell/food-cell'
 export default {
+  name: 'FoodList',
+  // 变量
+  // data () {},
+  computed: {
+    menuData: function () {
+      return this.$store.state.menu.data
+    }
+  },
+  // 使用其它组件
   components: {
     foodCell
+  },
+  // 在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用。
+  // 获取菜单信息
+  beforeCreate: function () {
+    this.$store.dispatch('getMenu')
+  },
+  // 方法
+  methods: {
+    // menuData () {
+    //   return this.$store.state.menu
+    // }
   }
 }
 </script>

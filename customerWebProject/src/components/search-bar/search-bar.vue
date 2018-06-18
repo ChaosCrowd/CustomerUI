@@ -2,7 +2,6 @@
 <template>
   <mt-search
   class="search"
-  v-model="value"
   cancel-text=""
   placeholder="搜索">
   </mt-search>

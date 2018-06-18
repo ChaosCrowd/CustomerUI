@@ -10,7 +10,7 @@
   <!-- 设置每个tab对应的内容 -->
   <mt-tab-container v-model="selected">
     <mt-tab-container-item id="1">
-      <index-list></index-list>
+      <food-list></food-list>
       <!-- 购物车，总价及结算按钮 -->
       <cart-footer></cart-footer>
     </mt-tab-container-item>
@@ -25,12 +25,12 @@
 </template>
 
 <script>
-import indexList from '@/components/food-list/food-list'
+import foodList from '@/components/food-list/food-list'
 import cartFooter from '@/components/cart-footer/cart-footer'
 export default {
   name: 'page-navbar',
   components: {
-    indexList,
+    foodList,
     cartFooter
   },
   data () {
