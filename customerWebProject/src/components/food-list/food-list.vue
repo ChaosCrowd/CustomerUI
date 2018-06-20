@@ -3,7 +3,7 @@
   <mt-index-list :show-indicator=false>
     <mt-index-section v-for="item in menuData" :index="item.category.name" :key="item.category.id">
       <!-- 用类别和菜品的id组合作为key，保证唯一性 -->
-      <food-cell v-for="good in item.goods" :key="good.id" v-bind="getGoodByID(good.id)"></food-cell>
+      <food-cell v-for="good in item.goods" :key="good.id" v-bind:id="good.id"></food-cell>
     </mt-index-section>
   </mt-index-list>
 </template>
@@ -43,12 +43,6 @@
 import foodCell from '@/components/food-cell/food-cell'
 export default {
   name: 'FoodList',
-  // 变量
-  // data: function () {
-  //   return {
-  //     menu: this.$store.state.menu
-  //   }
-  // },
   computed: {
     menuData: function () {
       return this.$store.state.menu
@@ -65,6 +59,7 @@ export default {
   // 方法
   methods: {
     getGoodByID (id) {
+      alert(id)
       return this.$store.getters.getGoodByID(id)
     }
   }

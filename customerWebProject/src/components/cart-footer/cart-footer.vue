@@ -17,6 +17,7 @@
 
 <script>
 export default {
+  name: 'CartFooter',
   // 确保小数部分合理表示
   filters: {
     currencydecimal (value) {

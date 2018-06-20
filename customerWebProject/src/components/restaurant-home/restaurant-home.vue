@@ -15,6 +15,7 @@ import search from '@/components/search-bar/search-bar'
 import shopTab from '@/components/shop-tab/shop-tab'
 import indexList from '@/components/food-list/food-list'
 export default {
+  name: 'RestaurantHome',
   components: {
     pageHeader,
     search,

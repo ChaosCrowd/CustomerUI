@@ -1,26 +1,21 @@
 <!-- 餐厅首页食物列表中的每个食物选项 -->
 <template>
-  <mt-cell :title="getFoodName" :label="desc" id="food-cell">
+  <mt-cell :title="foodName" :label="foodDesc" id="food-cell">
     <img slot="icon" src="@/assets/皮蛋瘦肉粥.jpeg" id="food-icon">
     <span id="food-volume">{{ foodVolume }}</span>
     <span id="food-price">￥{{ foodPrice | currencydecimal }}</span>
-    <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="getFoodNum> 0">
-    <span id="food-number" v-if="getFoodNum > 0">{{ getFoodNum }}</span>
+    <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="foodNum> 0">
+    <span id="food-number" v-if="foodNum > 0">{{ foodNum }}</span>
     <img src="@/assets/blue-add.png" id="cart-add" v-on:click="increaseFood">
   </mt-cell>
 </template>
 
 <script>
 export default {
+  name: 'FoodCell',
   data () {
     return {
-      foodNum: 0,
-      foodID: this.id,
-      foodName: this.name,
-      foodDesc: this.desc,
-      foodPrice: this.price,
-      foodImgSrc: this.img_src,
-      foodVolume: '月售 ' + this.volume
+      foodID: this.id
     }
   },
   // 确保小数部分合理表示
@@ -30,36 +25,45 @@ export default {
     }
   },
   props: {
-    id: Number,
-    name: String,
-    num: Number,
-    desc: String,
-    price: Number,
-    img_src: String,
-    volume: Number
+    id: Number
   },
   computed: {
-    getFoodNum () {
-      // alert((this.$store.getters.getGoodByID(this.foodID).num))
-      return this.$store.getters.getGoodByID(this.foodID).num
+    // 通过id获取菜品数据
+    food () {
+      return this.$store.getters.getGoodByID(this.id)
     },
-    getFoodName () {
-      return this.$store.getters.getGoodByID(this.foodID).name
+    foodNum () {
+      return this.food.num
+    },
+    foodName () {
+      return this.food.name
+    },
+    foodDesc () {
+      return this.food.desc
+    },
+    foodPrice () {
+      return this.food.price
+    },
+    foodImgSrc () {
+      return this.food.img_src
+    },
+    foodVolume () {
+      return '月售 ' + this.food.volume
     }
   },
   methods: {
     // 减菜
     decreaseFood () {
-      this.foodNum -= 1
-      this.$store.commit('decreaseFood', {
-        foodPrice: this.foodPrice,
-        foodID: this.foodID
-      })
+      if (this.foodNum > 0) {
+        this.$store.commit('decreaseFood', {
+          foodPrice: this.foodPrice,
+          foodID: this.foodID
+        })
+      }
     },
     // 加菜
     increaseFood () {
-      this.foodNum += 1
-      this.$store.dispatch('increaseFood', {
+      this.$store.commit('increaseFood', {
         foodPrice: this.foodPrice,
         foodID: this.foodID
       })

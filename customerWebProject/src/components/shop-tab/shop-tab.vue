@@ -28,7 +28,7 @@
 import foodList from '@/components/food-list/food-list'
 import cartFooter from '@/components/cart-footer/cart-footer'
 export default {
-  name: 'page-navbar',
+  name: 'ShopTab',
   components: {
     foodList,
     cartFooter

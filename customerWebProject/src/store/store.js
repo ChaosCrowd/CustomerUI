@@ -14,8 +14,6 @@ const store = new Vuex.Store({
     totalNum: 0,
     // 菜单
     menu: [],
-    // 已选的菜
-    selectedFoods: {},
     // 包括已选数量的菜式类
     goods: []
   },
@@ -30,63 +28,37 @@ const store = new Vuex.Store({
     increaseFood (state, payload) {
       state.totalNum += 1
       state.totalPrice += payload.foodPrice
-      if (state.selectedFoods[payload.foodID]) {
-        state.selectedFoods[payload.foodID] += 1
-      } else {
-        state.selectedFoods[payload.foodID] = 1
-      }
-      for (var x in state.goods) {
-        if (state.goods[x].id === payload.foodID) {
-          console.log('Before addtion: ', state.goods[x].num)
-          state.goods[x].num += 1
-          console.log('After addtion: ', state.goods[x].num)
-          // console.log(this.getters.getGoodByID(payload.foodID))
-          break
-        }
-      }
-      // console.log('after addtion: ', state.selectedFoods)
+      state.goods.find(good => good.id === payload.foodID).num += 1
     },
     // 减少某样菜
     decreaseFood (state, payload) {
-      if (state.selectedFoods[payload.foodID]) {
-        state.selectedFoods[payload.foodID] -= 1
-        // console.log('before: ', state.totalPrice)
-        state.totalPrice -= payload.foodPrice
-        state.totalNum -= 1
-      } else {
-        console.log('error in food decreasement')
-      }
-      // console.log('after deletion: ')
-      // for (var x in state.selectedFoods) {
-      //   console.log(x, state.selectedFoods[x])
-      // }
-      for (var x in state.goods) {
-        if (state.goods[x].id === payload.foodID) {
-          console.log('Before decrement: ', state.goods[x].num)
-          state.goods[x].num -= 1
-          console.log('After decrement: ', state.goods[x].num)
-          break
-        }
-      }
+      state.totalNum -= 1
+      state.totalPrice -= payload.foodPrice
+      state.goods.find(good => good.id === payload.foodID).num -= 1
     },
     // 根据菜单数据建立菜品集合，便于实现菜品数量的监控和数据获取
     initMenuAndGoods (state, payload) {
       state.menu = payload.menu
-      // console.log('state.menu: ', state.menu)
       for (var i in state.menu) {
         for (var j in state.menu[i].goods) {
           var good = state.menu[i].goods[j]
-          good['num'] = 0
           // 如果goods数组没有id与之相同的对象，则不添加，否则添加到goods
           if (!state.goods.find(function (x) {
             return x.id === good.id
           })) {
-            state.goods.push(good)
+            // 新建对象存入goods
+            state.goods.push({
+              id: good.id,
+              name: good.name,
+              num: 0,
+              desc: good.desc,
+              price: good.price,
+              img_src: good.img_src,
+              volume: good.volume
+            })
           }
         }
       }
-      // console.log('First good:', this.getters.getGoodByID(1))
-      console.log('state.goods: ', state.goods)
     }
   },
   actions: {
@@ -101,20 +73,24 @@ const store = new Vuex.Store({
         })))
         .catch(error => console.log(error))
     },
-    // 提交订单, 未处理异常情况
+    // 提交订单, 未处理异常情况，可能不应该写在这里吧。。
     uploadOrder (context) {
       console.log('start uploading')
       var foods = []
-      for (var x in context.state.selectedFoods) {
-        if (context.state.selectedFoods[x] > 0) {
+      for (var x in context.state.goods) {
+        if (context.state.goods[x].num > 0) {
           var foodInfo = {
-            goods_id: Number(x),
-            count: context.state.selectedFoods[x]
+            goods_id: context.state.goods[x].id,
+            count: context.state.goods[x].num
           }
           foods.push(foodInfo)
         }
       }
-      console.log(foods)
+      // console.log({
+      //   tables_number: context.state.tables_number,
+      //   timestamp: Date.now(),
+      //   order: foods
+      // })
       axios
         .post('https://private-caa14-eatwelly.apiary-mock.com/api/v1/order', {
           tables_number: context.state.tables_number,
@@ -124,8 +100,13 @@ const store = new Vuex.Store({
         .then(response => console.log(response.data))
         .catch(error => console.log(error))
     },
+    // 添加某样菜
     increaseFood (context, payload) {
       context.commit('increaseFood', payload)
+    },
+    // 减少某样菜
+    decreaseFood (context, payload) {
+      context.commit('decreaseFood', payload)
     }
   }
 })

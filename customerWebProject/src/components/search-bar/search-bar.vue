@@ -7,6 +7,12 @@
   </mt-search>
 </template>
 
+<script>
+export default {
+  name: 'SearchBar'
+}
+</script>
+
 <style scope>
   /* 去除搜索框灰色边框和背景 */
   .mint-searchbar {
