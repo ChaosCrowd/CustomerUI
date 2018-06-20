@@ -1,7 +1,7 @@
 <!-- 餐厅首页食物列表中的每个食物选项 -->
 <template>
   <mt-cell :title="foodName" :label="foodDesc" id="food-cell">
-    <img slot="icon" src="@/assets/皮蛋瘦肉粥.jpeg" id="food-icon">
+    <img slot="icon" :src="foodImgSrc" id="food-icon">
     <span id="food-volume">{{ foodVolume }}</span>
     <span id="food-price">￥{{ foodPrice | currencydecimal }}</span>
     <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="foodNum> 0">
