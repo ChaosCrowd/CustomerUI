@@ -1,11 +1,11 @@
 <!-- 餐厅首页食物列表中的每个食物选项 -->
 <template>
-  <mt-cell :title="foodName" :label="desc" id="food-cell">
+  <mt-cell :title="getFoodName" :label="desc" id="food-cell">
     <img slot="icon" src="@/assets/皮蛋瘦肉粥.jpeg" id="food-icon">
     <span id="food-volume">{{ foodVolume }}</span>
     <span id="food-price">￥{{ foodPrice | currencydecimal }}</span>
-    <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="foodNum > 0">
-    <span id="food-number" v-if="foodNum > 0">{{ foodNum }}</span>
+    <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="getFoodNum> 0">
+    <span id="food-number" v-if="getFoodNum > 0">{{ getFoodNum }}</span>
     <img src="@/assets/blue-add.png" id="cart-add" v-on:click="increaseFood">
   </mt-cell>
 </template>
@@ -32,10 +32,20 @@ export default {
   props: {
     id: Number,
     name: String,
+    num: Number,
     desc: String,
     price: Number,
     img_src: String,
     volume: Number
+  },
+  computed: {
+    getFoodNum () {
+      // alert((this.$store.getters.getGoodByID(this.foodID).num))
+      return this.$store.getters.getGoodByID(this.foodID).num
+    },
+    getFoodName () {
+      return this.$store.getters.getGoodByID(this.foodID).name
+    }
   },
   methods: {
     // 减菜
@@ -49,7 +59,7 @@ export default {
     // 加菜
     increaseFood () {
       this.foodNum += 1
-      this.$store.commit('increaseFood', {
+      this.$store.dispatch('increaseFood', {
         foodPrice: this.foodPrice,
         foodID: this.foodID
       })
