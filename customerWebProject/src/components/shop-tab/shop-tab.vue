@@ -1,25 +1,19 @@
 <!-- 顶部选项卡 -->
 <template>
-<div>
+<div class="shop-tab">
   <mt-navbar v-model="selected">
     <mt-tab-item id="1">点菜</mt-tab-item>
-    <mt-tab-item id="2">评价</mt-tab-item>
-    <mt-tab-item id="3">商家</mt-tab-item>
+    <mt-tab-item id="2">商家</mt-tab-item>
   </mt-navbar>
-
   <!-- 设置每个tab对应的内容 -->
   <mt-tab-container v-model="selected">
     <mt-tab-container-item id="1">
       <food-list></food-list>
       <!-- 购物车，总价及结算按钮 -->
-      <router-view></router-view>
       <cart-footer></cart-footer>
     </mt-tab-container-item>
     <mt-tab-container-item id="2">
-      <mt-cell v-for="n in 4" :title="'测试 ' + n" v-bind:key = n></mt-cell>
-    </mt-tab-container-item>
-    <mt-tab-container-item id="3">
-      <mt-cell v-for="n in 6" :title="'选项 ' + n" v-bind:key = n></mt-cell>
+      <shop-info></shop-info>
     </mt-tab-container-item>
   </mt-tab-container>
 </div>
@@ -28,15 +22,13 @@
 <script>
 import foodList from '@/components/food-list/food-list'
 import cartFooter from '@/components/cart-footer/cart-footer'
-import cartlist from '@/components/cart-list/cart-list'
-import foodinfo from '@/components/food-info/food-info'
+import shopInfo from '@/components/shop-info/shop-info'
 export default {
   name: 'ShopTab',
   components: {
     foodList,
-    foodinfo,
-    cartlist,
-    cartFooter
+    cartFooter,
+    shopInfo
   },
   data () {
     return {
@@ -49,16 +41,16 @@ export default {
 
 <style scope>
   /* 选项卡字体 */
-  .mint-tab-item-label {
+  .shop-tab .mint-tab-item-label {
     font-size: 1.0rem;
     line-height: 1vh;
   }
   /* 选项卡大小 */
-  .mint-navbar {
+  .shop-tab .mint-navbar {
     height: 6vh;
   }
   /* 选项卡对应内容窗口大小 */
-  .mint-indexlist {
+  .shop-tab .mint-indexlist {
     height: 63vh;
   }
 </style>

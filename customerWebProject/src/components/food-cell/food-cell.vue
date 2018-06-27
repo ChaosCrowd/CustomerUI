@@ -39,7 +39,12 @@ export default {
       return this.food.name
     },
     foodDesc () {
-      return this.food.desc
+      var str = this.food.desc
+      // 菜品描述多于10个字符时,显示前10个字符+省略号
+      if (str.length > 10) {
+        str = str.slice(0, 11) + '...'
+      }
+      return str
     },
     foodPrice () {
       return this.food.price
@@ -68,6 +73,7 @@ export default {
         foodID: this.foodID
       })
     },
+    // 跳转到菜品详情
     showinfo () {
       this.$router.push({name: 'foodinfo', params: {fid: this.foodID}})
     }

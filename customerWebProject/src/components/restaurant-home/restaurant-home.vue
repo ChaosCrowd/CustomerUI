@@ -1,6 +1,7 @@
 <!-- 餐厅首页 -->
 <template>
     <div>
+        <router-view></router-view>
         <!-- 头部 -->
         <page-header></page-header>
         <!-- 搜索框 -->
@@ -21,6 +22,38 @@ export default {
     search,
     shopTab,
     indexList
+  },
+  computed: {
+    isFinish () {
+      return (this.$store.state.goods.length !== 0 &&
+      this.$store.state.shop.length !== 0)
+    }
+  },
+  mounted: function () {
+    if (this.$store.state.goods.length === 0 ||
+      this.$store.state.shop.length === 0) {
+      this.$indicator.open({spinnerType: 'fading-circle'})
+    }
+    // 获取商家信息
+    this.$store.dispatch('getShop')
+    // 获取菜单信息
+    this.$store.dispatch('getMenu')
+    // 设置桌号
+    this.$store.dispatch('setTableNum', {
+      tableID: this.$route.params.tableID
+    })
+  },
+  watch: {
+    // 如果 `isFinish` 发生改变，这个函数就会运行
+    isFinish: function (newStatus, oldStatus) {
+      if (newStatus === false) {
+        // 显示加载圈
+        this.$indicator.open({spinnerType: 'fading-circle'})
+      } else {
+        // 消除加载圈
+        this.$indicator.close()
+      }
+    }
   }
 }
 </script>
@@ -28,11 +61,9 @@ export default {
 <style scope>
   /* 搜索框位置 */
   #search-bar {
-    position: fixed;
+    position: absolute;
     top: 20%;
     left: 0;
-    width: 100%;
-    height: 4%;
     /* 仅为标记，待删 */
     /* border: 1px solid #DDDDDD; */
   }

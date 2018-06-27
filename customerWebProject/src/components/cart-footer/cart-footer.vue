@@ -63,6 +63,7 @@ export default {
         this.$store.dispatch('uploadOrder')
       }
     },
+    // 展示购物车
     showlist () {
       if (this.flag) {
         this.flag = false
@@ -70,6 +71,7 @@ export default {
         this.flag = true
       }
     },
+    // 跳转到结算界面
     pay () {
       if (this.$store.state.totalNum !== 0) {
         this.$router.push('/pagepay')

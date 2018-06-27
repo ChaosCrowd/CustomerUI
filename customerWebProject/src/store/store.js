@@ -14,13 +14,20 @@ const store = new Vuex.Store({
     totalNum: 0,
     // 菜单
     menu: [],
-    // 包括已选数量的菜式类
-    goods: []
+    // 所有菜品
+    goods: [],
+    // 商家信息
+    shop: []
   },
   getters: {
     // 方便通过id进行查询
     getGoodByID: (state) => (id) => {
       return state.goods.find(good => good.id === id)
+    },
+    // 查询有该字段的菜
+    searchGoodsByName: (state) => (name) => {
+      if (name === '') return []
+      return state.goods.filter(good => good.name.indexOf(name) !== -1)
     }
   },
   mutations: {
@@ -67,6 +74,14 @@ const store = new Vuex.Store({
       for (var i in state.goods) {
         state.goods[i].num = 0
       }
+    },
+    // 用获取的信息初始化商家信息shop
+    initShop (state, payload) {
+      state.shop = payload.shop
+    },
+    // 设置桌号
+    setTableNum (state, payload) {
+      state.tables_number = payload.tableID
     }
   },
   actions: {
@@ -78,6 +93,16 @@ const store = new Vuex.Store({
         .then(response => (context.commit('initMenuAndGoods', {
           msg: response.data.msg,
           menu: response.data.data
+        })))
+        .catch(error => console.log(error))
+    },
+    // 获取商家信息
+    getShop (context) {
+      axios
+        .get('https://private-caa14-eatwelly.apiary-mock.com/api/v1/shop')
+        .then(response => (context.commit('initShop', {
+          msg: response.data.msg,
+          shop: response.data.data
         })))
         .catch(error => console.log(error))
     },
@@ -94,11 +119,6 @@ const store = new Vuex.Store({
           foods.push(foodInfo)
         }
       }
-      // console.log({
-      //   tables_number: context.state.tables_number,
-      //   timestamp: Date.now(),
-      //   order: foods
-      // })
       axios
         .post('https://private-caa14-eatwelly.apiary-mock.com/api/v1/order', {
           tables_number: context.state.tables_number,
@@ -116,8 +136,13 @@ const store = new Vuex.Store({
     decreaseFood (context, payload) {
       context.commit('decreaseFood', payload)
     },
+    // 清空购物车
     clearFood (context) {
       context.commit('clearFood')
+    },
+    // 设置桌号
+    setTableNum (context, payload) {
+      context.commit('setTableNum', payload)
     }
   }
 })

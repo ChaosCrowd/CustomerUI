@@ -1,25 +1,34 @@
+<!-- 商品详情界面 -->
 <template>
-  <div id="food-info">
-    <img :src="foodImgSrc" id="food-img">
-    <img src="@/assets/back.png" id="back-img" @click="$router.go(-1)">
-    <div id="info">
-      <p id="name">{{ foodName }}</p>
-      <p id="sell">{{ foodVolume }}</p>
-      <p id="price">￥{{ foodPrice }}</p>
-      <button id="add">加入购物车</button>
-    </div>
-    <div id="comment">
-      <mt-cell v-for="n in 10" :title="'评论 ' + n" v-bind:key = n></mt-cell>
-    </div>
+  <div class="food-info">
+    <mt-cell :title="foodName" class="info-cell">
+      <img src="@/assets/back4.png" v-on:click="goback" class="info-backButton">
+      <img slot="icon" :src="foodImgSrc" id="info-icon">
+      <span id="info-volume">{{ foodVolume }}</span>
+      <span id="info-price">￥{{ foodPrice | currencydecimal }}</span>
+      <img src="@/assets/blue-minus.png" id="info-cart-minus" v-on:click="decreaseFood" v-if="foodNum> 0">
+      <span id="info-number" v-if="foodNum > 0">{{ foodNum }}</span>
+      <img src="@/assets/blue-add.png" id="info-cart-add" v-if="foodNum> 0" v-on:click="increaseFood">
+      <p id="info-carttext" v-on:click="increaseFood" v-if="foodNum === 0">{{ cartText }}</p>
+      <p id="info-desctext">{{ descText }}</p>
+      <p id="info-desc">{{ foodDesc }}</p>
+    </mt-cell>
+    <cart-footer></cart-footer>
   </div>
 </template>
 
 <script>
+import cartFooter from '@/components/cart-footer/cart-footer'
 export default {
   data () {
     return {
-      foodID: this.$route.params.fid
+      foodID: this.$route.params.fid,
+      descText: '菜品描述',
+      cartText: '加入购物车'
     }
+  },
+  components: {
+    cartFooter
   },
   // 确保小数部分合理表示
   filters: {
@@ -32,8 +41,14 @@ export default {
     food () {
       return this.$store.getters.getGoodByID(this.foodID)
     },
+    foodNum () {
+      return this.food.num
+    },
     foodName () {
       return this.food.name
+    },
+    foodDesc () {
+      return this.food.desc
     },
     foodPrice () {
       return this.food.price
@@ -44,85 +59,131 @@ export default {
     foodVolume () {
       return '月售 ' + this.food.volume
     }
+  },
+  methods: {
+    // 减菜
+    decreaseFood () {
+      if (this.foodNum > 0) {
+        this.$store.commit('decreaseFood', {
+          foodPrice: this.foodPrice,
+          foodID: this.foodID
+        })
+      }
+    },
+    // 加菜
+    increaseFood () {
+      this.$store.commit('increaseFood', {
+        foodPrice: this.foodPrice,
+        foodID: this.foodID
+      })
+    },
+    // 回退
+    goback () {
+      window.history.length > 1
+        ? this.$router.go(-1)
+        : this.$router.push('/')
+    }
   }
 }
 </script>
 
 <style scope>
-#food-info {
-  position: fixed;
-  top: 0vh;
-  left: 0vh;
-  width: 100%;
-  height: 100%;
-  color: black;
-  overflow-y: auto;
-  background-color: rgb(240, 240, 240);
-}
-#food-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vw;
-}
-#back-img {
-  position: absolute;
-  top: 2vw;
-  left: 2vw;
-  width: 10vw;
-  height: 10vw
-}
-#info {
-  position: absolute;
-  top: 40vh;
-  left: 0vh;
-  width: 100%;
-  height: 15%;
-  color: black;
-  background: white;
-  overflow-y: auto;
-}
-#name {
-  position: absolute;
-  top: 0vw;
-  left: 5vw;
-  font-size: 18px;
-  font-weight:bold;
-}
-#sell {
-  position: absolute;
-  top: 7vw;
-  left: 5vw;
-  color: gray;
-  font-size: 15px;
-}
-#price {
-  position: absolute;
-  top: 8vw;
-  left: 4vw;
-  font-weight:bold;
-  color:red;
-  font-size: 30px;
-}
-#add {
-  position: absolute;
-  border-radius: 25px;
-  background: orange;
-  bottom: 5vw;
-  right: 5vw;
-  border: none;
-  width: 100px;
-  height: 30px;
-}
-#comment {
-  position: absolute;
-  top: 60vh;
-  left: 0vh;
-  width: 100%;
-  height: 30%;
-  color: black;
-  background: white;
-  overflow-y: auto;
-}
+  .food-info {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(250, 235, 215)
+  }
+  .info-cell {
+    height: 140vw;
+    top: 0vw;
+  }
+  .info-backButton {
+    position: absolute;
+    width: 12vw;
+    height: 12vw;
+    top: 0;
+    left: 0;
+  }
+  #info-icon {
+    width: 96vw;
+    height: 70vw;
+    position: absolute;
+    top: 12vw;
+    left: 0;
+    /* margin-top: 2vw; */
+    margin-left: 2vw;
+  }
+  #info-volume {
+    position: absolute;
+    left: 5vw;
+    top: 92vw;
+    font-size: 4vw;
+  }
+  #info-cart-minus {
+    width: 6vw;
+    height: 6vw;
+    position: absolute;
+    right: 18.5vw;
+    top: 98vw;
+    margin: auto;
+  }
+  #info-cart-add {
+    width: 6vw;
+    height: 6vw;
+    position: absolute;
+    right: 2.5vw;
+    top: 98vw;
+    margin: auto;
+  }
+  #info-price{
+    display: block;
+    position: absolute;
+    left: 4vw;
+    top: 98vw;
+    color: red;
+  }
+  #info-number {
+    display: block;
+    position: absolute;
+    width: 10vw;
+    text-align: center;
+    right: 8.5vw;
+    top: 99vw;
+  }
+  .food-info .mint-cell-text {
+    display: block;
+    position: absolute;
+    top: 85vw;
+    left: 5vw;
+    text-align: left;
+    font-weight: bold;
+  }
+  #info-desctext {
+    position: absolute;
+    font-size: 5vw;
+    color: #2c3e50;
+    font-weight: bold;
+    left: 5vw;
+    top: 105vw;
+  }
+  #info-desc {
+    position: absolute;
+    left: 5vw;
+    top: 112vw;
+    margin-right: 2vw;
+    text-align: left;
+    color: #2c3e50
+  }
+  #info-carttext {
+    position: absolute;
+    right: 2vw;
+    top: 92vw;
+    width: 30vw;
+    height: 10vw;
+    line-height: 10vw;
+    border-radius: 5vw;
+    font-size: 5vw;
+    background-color: #FF9933;
+    color: white;
+  }
 </style>

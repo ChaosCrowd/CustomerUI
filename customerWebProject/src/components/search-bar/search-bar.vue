@@ -1,10 +1,10 @@
 <!-- 搜索栏 -->
 <template>
-  <mt-search
-  class="search"
-  cancel-text=""
-  placeholder="搜索">
-  </mt-search>
+  <div class="search-bar">
+    <mt-cell title="搜索" is-link to="search">
+      <img slot="icon" src="@/assets/search1.png" width="20" height="20">
+    </mt-cell>
+  </div>
 </template>
 
 <script>
@@ -14,19 +14,15 @@ export default {
 </script>
 
 <style scope>
-  /* 去除搜索框灰色边框和背景 */
-  .mint-searchbar {
-    padding: 0;
-    background-color: white;
-  }
-  /* “取消”字样 */
-  .mint-searchbar-cancel {
-    line-height: 0;
-    padding: 0;
-    font-size: 0.85rem;
-  }
-  /* 输入框内部高度 */
-  .mint-searchbar-inner {
+  .search-bar {
+    width: 100vw;
     height: 4vh;
+  }
+  .search-bar .mint-cell {
+    min-height: 0;
+  }
+  .search-bar .mint-cell-title {
+    text-align: left;
+    line-height: 4vh;
   }
 </style>
