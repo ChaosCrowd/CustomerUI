@@ -42,15 +42,24 @@ export default {
 <style scope>
   /* 选项卡字体 */
   .shop-tab .mint-tab-item-label {
-    font-size: 1.0rem;
+    font-size: 5vw;
     line-height: 1vh;
+    color: #2c3e50;
   }
   /* 选项卡大小 */
   .shop-tab .mint-navbar {
     height: 6vh;
+    border-bottom: 1px #DDDDDD solid;
+    border-top: 1px #DDDDDD solid;
   }
   /* 选项卡对应内容窗口大小 */
   .shop-tab .mint-indexlist {
     height: 63vh;
+  }
+  /* 选项卡被选中时不显示蓝色底边 */
+  .shop-tab .mint-navbar .mint-tab-item.is-selected {
+    border-bottom: none;
+    color: #2c3e50;
+    font-weight: bold;
   }
 </style>

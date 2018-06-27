@@ -104,6 +104,7 @@ export default {
     top: 0;
     left: 0;
   }
+  /* 菜品图像 */
   #info-icon {
     width: 96vw;
     height: 70vw;
@@ -112,6 +113,7 @@ export default {
     left: 0;
     /* margin-top: 2vw; */
     margin-left: 2vw;
+    border-radius: 2vw;
   }
   #info-volume {
     position: absolute;
@@ -141,6 +143,7 @@ export default {
     left: 4vw;
     top: 98vw;
     color: red;
+    font-weight: bold;
   }
   #info-number {
     display: block;
@@ -149,6 +152,9 @@ export default {
     text-align: center;
     right: 8.5vw;
     top: 99vw;
+    font-size: 5vw;
+    color: #2c3e50;
+    font-weight: bold;
   }
   .food-info .mint-cell-text {
     display: block;
@@ -184,6 +190,7 @@ export default {
     border-radius: 5vw;
     font-size: 5vw;
     background-color: #FF9933;
-    color: white;
+    color: #2c3e50;
+    font-weight: bold;
   }
 </style>

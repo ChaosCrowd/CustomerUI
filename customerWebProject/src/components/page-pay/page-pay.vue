@@ -5,7 +5,7 @@
     <p id="selected-food">订单</p>
     <div id="pay-list">
       <mt-cell v-for="good in goodData" :key="good.id" v-bind:id="good.id" v-if="good.num > 0">
-        <img :src="good.img_src" width="36" height="36" id="pfood-icon">
+        <img :src="good.img_src" id="pfood-icon">
         <span id="pname">{{ good.name }}</span>
         <span id="pnum">{{ good.num }}</span>
         <span id="pprice">￥{{ good.price }}</span>
@@ -14,13 +14,19 @@
     <p id="pay-mention">{{ totalNumAndPrice }}</p>
     <p id="pay-overview">其他</p>
     <div class="pay-info">
-      <mt-cell title="桌号">{{ tableNumber }}</mt-cell>
+      <mt-cell title="桌号">
+        <img slot="icon" src="@/assets/table.svg" class="pay-overview-icon">
+        {{ tableNumber }}
+      </mt-cell>
       <div v-on:click="wayflag = !wayflag">
-        <mt-cell title="支付方式" is-link>{{ payway }}</mt-cell>
+        <mt-cell title="支付方式" is-link>
+          <img slot="icon" src="@/assets/pay.svg" class="pay-overview-icon">
+          {{ payway }}
+        </mt-cell>
       </div>
       <mt-field label="备注" class="remark" v-model="remarks"></mt-field>
     </div>
-    <div id="submit">提交订单</div>
+    <div id="submit" v-on:click="uploadOrder">提交订单</div>
     <mt-popup v-model="numflag" position="bottom">
       <mt-picker :slots="slots1" id="numpicker" @change="onValuesChange"></mt-picker>
     </mt-popup>
@@ -48,7 +54,7 @@ export default {
       return this.$store.state.goods
     },
     totalNumAndPrice: function () {
-      var str = '共' + String(this.$store.state.totalNum) + '项,'
+      var str = '已选菜品共' + String(this.$store.state.totalNum) + '项,'
       str += '合计' + String(this.$store.state.totalPrice.toFixed(2)) + '元人民币'
       return str
     },
@@ -70,15 +76,40 @@ export default {
       window.history.length > 1
         ? this.$router.go(-1)
         : this.$router.push('/')
+    },
+    // 上传订单
+    uploadOrder () {
+      this.$store.dispatch('uploadOrder')
     }
   }
 }
 </script>
 
 <style scope>
-.mint-popup {
+#page-pay {
+  position: fixed;
+  top: 0vh;
+  left: 0vh;
+  width: 100vw;
+  height: 100vh;
+  color: #2c3e50;
+  overflow-y: auto;
+  background-color: white;
+}
+#page-pay .mint-cell {
+  height: 15vw;
+  color: #2c3e50;
+}
+#page-pay .mint-popup {
   width: 100vw;
   height: 20vh;
+}
+.pay-overview-icon {
+  position: absolute;
+  top: 3vw;
+  left: 5vw;
+  width: 8vw;
+  height: 8vw;
 }
 #selected-food {
   margin: 0;
@@ -87,34 +118,27 @@ export default {
   left: 0;
   width: 20vw;
   height: 10vw;
-  background-color: white;
+  background-color: #3399CC;
   border-radius: 0 5vw 5vw 0;
+  font-size: 5vw;
 }
 #pay-overview {
   margin: 0;
   position: absolute;
-  top: 95vw;
+  top: 80vw;
   left: 0;
   width: 20vw;
   height: 10vw;
-  background-color: white;
+  background-color: #FF6666;
   border-radius: 0 5vw 5vw 0;
+  font-size: 5vw;
 }
 #pay-mention {
   position: absolute;
-  top: 75vw;
+  top: 135vw;
   right: 0;
   font-size: 5vw;
-}
-#page-pay {
-  position: fixed;
-  top: 0vh;
-  left: 0vh;
-  width: 100vw;
-  height: 100vh;
-  color: black;
-  overflow-y: auto;
-  background-color: rgb(250, 235, 215);
+  font-weight: bold;
 }
 #title {
   position: absolute;
@@ -126,7 +150,7 @@ export default {
   filter:alpha(opacity=70);
   opacity:0.7;
 }
-.backButton {
+#page-pay .backButton {
   position: absolute;
   top: 0;
   left: 0;
@@ -139,13 +163,12 @@ export default {
   left: 0vh;
   width: 100vw;
   max-height: 30vh;
-  color: black;
-  background: white;
   overflow-y: auto;
+  border-radius: 2vw;
 }
 .pay-info {
   position: absolute;
-  top:108vw;
+  top:93vw;
   left: 0vh;
   width: 100vw;
   color: black;
@@ -181,28 +204,33 @@ export default {
   font-size: 20px;
   background-color: white;
 }
-.remark .mint-field-core {
+#page-pay .remark .mint-field-core {
   margin-right: 5vw;
   text-align: right;
 }
 #pfood-icon {
   position: absolute;
-  top: 1vh;
-  left: 3vh;
+  top: 2vw;
+  left: 4vw;
+  width: 11vw;
+  height: 11vw;
 }
 #pname {
   position: absolute;
-  top: 2vh;
-  left: 10vh;
+  top: 5vw;
+  left: 20vw;
+  color: #2c3e50;
 }
 #pnum {
   position: absolute;
-  top: 2vh;
-  left: 30vh;
+  top: 5vw;
+  left: 60vw;
+  color: #2c3e50;
 }
 #pprice {
   position: absolute;
-  top: 2vh;
-  right: 2vh;
+  top: 5vw;
+  right: 4vw;
+  color: #2c3e50;
 }
 </style>

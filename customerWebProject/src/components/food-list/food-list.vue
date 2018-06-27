@@ -17,7 +17,7 @@
   }
   .food-list .mint-indexlist-navitem {
     padding: 2.5vh 2vw;
-    font-size: 0.85rem;
+    font-size: 4vw;
     /* 标明边界 */
     border: 1px solid #DDDDDD;
   }
@@ -36,6 +36,8 @@
     padding: 0;
     text-align: left;
     margin-left: 2.6vw;
+    font-size: 4vw;
+    font-weight: bold;
   }
 </style>
 

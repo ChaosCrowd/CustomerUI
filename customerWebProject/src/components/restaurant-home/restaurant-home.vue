@@ -1,7 +1,6 @@
 <!-- 餐厅首页 -->
 <template>
     <div>
-        <router-view></router-view>
         <!-- 头部 -->
         <page-header></page-header>
         <!-- 搜索框 -->
@@ -62,18 +61,14 @@ export default {
   /* 搜索框位置 */
   #search-bar {
     position: absolute;
-    top: 20%;
+    top: 20vh;
     left: 0;
-    /* 仅为标记，待删 */
-    /* border: 1px solid #DDDDDD; */
   }
   /* 顶部选项卡位置 */
   #shop-tab {
     position: absolute;
     top: 24vh;
     left: 0;
-    width: 100%;
-    /* 仅为标记，待删 */
-    border: 1px solid #DDDDDD;
+    width: 100vw;
   }
 </style>

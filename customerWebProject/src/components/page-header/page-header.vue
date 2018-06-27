@@ -47,5 +47,6 @@ export default {
     left: 35vw;
     top: 10vw;
     font-weight: bold;
+    font-size: 6vw;
   }
 </style>

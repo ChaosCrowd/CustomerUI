@@ -25,4 +25,7 @@ export default {
     text-align: left;
     line-height: 4vh;
   }
+  .search-bar .mint-cell-text {
+    font-size: 4vw;
+  }
 </style>

@@ -4,6 +4,7 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
+const routeBase = 'http://139.199.71.21:8080'
 const store = new Vuex.Store({
   state: {
     // 桌号
@@ -87,9 +88,8 @@ const store = new Vuex.Store({
   actions: {
     // 获取菜单数据，未处理异常情况
     getMenu (context) {
-      console.log('start fetching')
       axios
-        .get('https://private-caa14-eatwelly.apiary-mock.com/api/v1/menu')
+        .get(routeBase + '/ordering/api/v1/menu')
         .then(response => (context.commit('initMenuAndGoods', {
           msg: response.data.msg,
           menu: response.data.data
@@ -99,7 +99,7 @@ const store = new Vuex.Store({
     // 获取商家信息
     getShop (context) {
       axios
-        .get('https://private-caa14-eatwelly.apiary-mock.com/api/v1/shop')
+        .get(routeBase + '/ordering/api/v1/shop')
         .then(response => (context.commit('initShop', {
           msg: response.data.msg,
           shop: response.data.data
@@ -120,7 +120,7 @@ const store = new Vuex.Store({
         }
       }
       axios
-        .post('https://private-caa14-eatwelly.apiary-mock.com/api/v1/order', {
+        .post(routeBase + '/ordering/api/v1/order', {
           tables_number: context.state.tables_number,
           timestamp: Date.now(),
           order: foods

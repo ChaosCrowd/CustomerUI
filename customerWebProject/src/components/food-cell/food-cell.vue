@@ -40,9 +40,9 @@ export default {
     },
     foodDesc () {
       var str = this.food.desc
-      // 菜品描述多于10个字符时,显示前10个字符+省略号
-      if (str.length > 10) {
-        str = str.slice(0, 11) + '...'
+      // 菜品描述多于8个字符时,显示前8个字符+省略号
+      if (str.length > 8) {
+        str = str.slice(0, 8) + '...'
       }
       return str
     },
@@ -119,8 +119,10 @@ export default {
     display: block;
     position: absolute;
     left: 30vw;
-    top: 23vw;
+    top: 22vw;
+    font-size: 5vw;
     color: red;
+    font-weight: bold;
   }
   #food-number {
     display: block;
@@ -129,17 +131,23 @@ export default {
     text-align: center;
     right: 8.5vw;
     bottom: 3vw;
+    font-size: 5vw;
+    color: #2c3e50;
+    font-weight: bold;
   }
   .food-cell .mint-cell-text {
     display: block;
     margin-top: 1.5vw;
     margin-left: 28vw;
     text-align: left;
+    font-size: 5vw;
+    font-weight: bold;
   }
   .food-cell .mint-cell-label {
     display: block;
     margin-top: 3.5vw;
     margin-left: 28vw;
     text-align: left;
+    font-size: 3vw;
   }
 </style>

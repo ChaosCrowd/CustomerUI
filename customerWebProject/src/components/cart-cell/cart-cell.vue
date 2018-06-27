@@ -63,44 +63,46 @@ export default {
 <style scope>
   #cart-cell {
     height:12vw;
-    background-color: rgb(230, 230, 230);
+    font-size: 5vw;
+    background-color: white;
   }
-  #cart-minus {
+  #cart-cell #cart-minus {
     width: 6vw;
     height: 6vw;
     position: absolute;
     right: 18.5vw;
-    bottom: 2.5vw;
     margin: auto;
+    bottom: 5vw;
   }
-  #cart-add {
+  #cart-cell #cart-add {
     width: 6vw;
     height: 6vw;
     position: absolute;
     right: 2.5vw;
-    bottom: 2.5vw;
     margin: auto;
+    bottom: 5vw;
   }
-  #cfood-name{
+  #cart-cell #cfood-name{
     display: block;
     position: absolute;
     left: 6vw;
     top: 5vw;
     color: black;
   }
-  #cfood-price{
+  #cart-cell #cfood-price{
     display: block;
     position: absolute;
     left: 50vw;
     top: 5vw;
     color: black;
   }
-  #cfood-number {
+  #cart-cell #cfood-number {
     display: block;
     position: absolute;
     width: 10vw;
     text-align: center;
+    color: #2c3e50;
     right: 8.5vw;
-    bottom: 3vw;
+    bottom: 5vw;
   }
 </style>

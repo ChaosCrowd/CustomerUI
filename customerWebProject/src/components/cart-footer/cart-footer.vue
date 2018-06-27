@@ -16,7 +16,7 @@
     <div id="bottom-bar-right"
       v-bind:class="{ 'gray-background': isEmpty, 'green-background': !isEmpty}"
        @click="pay">
-      <span id="cart-balance" v-on:click="uploadOrder">结算</span>
+      <span id="cart-balance">结算</span>
     </div>
   </div>
 </template>
@@ -55,14 +55,6 @@ export default {
     }
   },
   methods: {
-    // 上传订单
-    // 本应在提交页面，此处用于熟悉和测试，之后转移
-    uploadOrder () {
-      if (this.$store.state.totalNum > 0) {
-        console.log('Uploading')
-        this.$store.dispatch('uploadOrder')
-      }
-    },
     // 展示购物车
     showlist () {
       if (this.flag) {
@@ -165,5 +157,6 @@ export default {
     height: 5vw;
     border-radius: 50%;
     background-color: orangered;
+    font-size: 4vw;
   }
 </style>

@@ -9,7 +9,7 @@
     placeholder="搜索">
       <food-cell v-for="good in result" :key="good.id" v-bind:id="good.id"></food-cell>
     </mt-search>
-    <p v-if="!result.length && value !== ''">{{ notFoundInfo }}</p>
+    <p id="notFoundMsg" v-if="!result.length && value.length !== 0">{{ notFoundInfo }}</p>
     <cart-footer v-if="result.length !== 0"></cart-footer>
   </div>
 </template>
@@ -45,6 +45,14 @@ export default {
 </script>
 
 <style scope>
+  /* 未找到结果的显示 */
+  #notFoundMsg {
+    position: absolute;
+    width: 100vw;
+    top: 15vw;
+    text-align: center;
+    font-size: 5vw;
+  }
   /* 去除搜索框灰色边框和背景 */
   .search .mint-searchbar {
     margin-left: 12vw;
@@ -52,7 +60,7 @@ export default {
     background-color: white;
     height: 12vw;
     position: relative;
-    top: 0;
+    top: 1vw;
     border: 2px gray solid;
     border-radius: 6vw;
   }
@@ -70,7 +78,9 @@ export default {
   /* 使搜索栏置顶 */
   .search .mint-search-list {
     padding: 0;
+    top: 1vw;
     position: relative;
+    max-height: 85vh;
   }
   .search-real .mint-search {
     position: absolute;
@@ -89,7 +99,7 @@ export default {
     background: white;
     width: 12vw;
     height: 12vw;
-    top: 0;
+    top: 1vw;
     left: 0;
   }
 </style>
