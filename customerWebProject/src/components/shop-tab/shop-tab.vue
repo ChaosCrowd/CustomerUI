@@ -12,6 +12,7 @@
     <mt-tab-container-item id="1">
       <food-list></food-list>
       <!-- 购物车，总价及结算按钮 -->
+      <router-view></router-view>
       <cart-footer></cart-footer>
     </mt-tab-container-item>
     <mt-tab-container-item id="2">
@@ -27,10 +28,14 @@
 <script>
 import foodList from '@/components/food-list/food-list'
 import cartFooter from '@/components/cart-footer/cart-footer'
+import cartlist from '@/components/cart-list/cart-list'
+import foodinfo from '@/components/food-info/food-info'
 export default {
   name: 'ShopTab',
   components: {
     foodList,
+    foodinfo,
+    cartlist,
     cartFooter
   },
   data () {

@@ -59,6 +59,14 @@ const store = new Vuex.Store({
           }
         }
       }
+    },
+    // 清空购物车
+    clearFood (state) {
+      state.totalNum = 0
+      state.totalPrice = 0
+      for (var i in state.goods) {
+        state.goods[i].num = 0
+      }
     }
   },
   actions: {
@@ -107,6 +115,9 @@ const store = new Vuex.Store({
     // 减少某样菜
     decreaseFood (context, payload) {
       context.commit('decreaseFood', payload)
+    },
+    clearFood (context) {
+      context.commit('clearFood')
     }
   }
 })

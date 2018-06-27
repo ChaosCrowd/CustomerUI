@@ -1,24 +1,21 @@
-<!-- 餐厅首页食物列表中的每个食物选项 -->
 <template>
-  <mt-cell :title="foodName" :label="foodDesc" class="food-cell">
-    <img slot="icon" :src="foodImgSrc" id="food-icon" @click="showinfo">
-    <span id="food-volume">{{ foodVolume }}</span>
-    <span id="food-price">￥{{ foodPrice | currencydecimal }}</span>
+  <mt-cell id="cart-cell" v-if="foodNum > 0">
+    <span id="cfood-name">{{ foodName }}</span>
+    <span id="cfood-price">￥{{ foodPrice * foodNum | currencydecimal }}</span>
     <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="foodNum> 0">
-    <span id="food-number" v-if="foodNum > 0">{{ foodNum }}</span>
+    <span id="cfood-number" v-if="foodNum > 0">{{ foodNum }}</span>
     <img src="@/assets/blue-add.png" id="cart-add" v-on:click="increaseFood">
   </mt-cell>
 </template>
 
 <script>
 export default {
-  name: 'FoodCell',
+  name: 'CartCell',
   data () {
     return {
       foodID: this.id
     }
   },
-  // 确保小数部分合理表示
   filters: {
     currencydecimal (value) {
       return value.toFixed(2)
@@ -38,17 +35,8 @@ export default {
     foodName () {
       return this.food.name
     },
-    foodDesc () {
-      return this.food.desc
-    },
     foodPrice () {
       return this.food.price
-    },
-    foodImgSrc () {
-      return this.food.img_src
-    },
-    foodVolume () {
-      return '月售 ' + this.food.volume
     }
   },
   methods: {
@@ -67,31 +55,15 @@ export default {
         foodPrice: this.foodPrice,
         foodID: this.foodID
       })
-    },
-    showinfo () {
-      this.$router.push({name: 'foodinfo', params: {fid: this.foodID}})
     }
   }
 }
 </script>
 
 <style scope>
-  .food-cell {
-    height: 30vw;
-  }
-  #food-icon {
-    width: 25vw;
-    height: 25vw;
-    position: absolute;
-    left: 0;
-    margin-top: 1.5vw;
-    margin-left: 1.5vw;
-  }
-  #food-volume {
-    position: absolute;
-    left: 31vw;
-    top: 16vw;
-    font-size: 3vw;
+  #cart-cell {
+    height:12vw;
+    background-color: rgb(230, 230, 230);
   }
   #cart-minus {
     width: 6vw;
@@ -109,31 +81,26 @@ export default {
     bottom: 2.5vw;
     margin: auto;
   }
-  #food-price{
+  #cfood-name{
     display: block;
     position: absolute;
-    left: 30vw;
-    top: 23vw;
-    color: red;
+    left: 6vw;
+    top: 5vw;
+    color: black;
   }
-  #food-number {
+  #cfood-price{
+    display: block;
+    position: absolute;
+    left: 50vw;
+    top: 5vw;
+    color: black;
+  }
+  #cfood-number {
     display: block;
     position: absolute;
     width: 10vw;
     text-align: center;
     right: 8.5vw;
     bottom: 3vw;
-  }
-  .food-cell .mint-cell-text {
-    display: block;
-    margin-top: 1.5vw;
-    margin-left: 28vw;
-    text-align: left;
-  }
-  .food-cell .mint-cell-label {
-    display: block;
-    margin-top: 3.5vw;
-    margin-left: 28vw;
-    text-align: left;
   }
 </style>
