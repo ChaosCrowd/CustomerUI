@@ -1,18 +1,60 @@
 <template>
-  <mt-cell id="cart-cell">
-    <span id="cfood-name">皮蛋瘦肉粥</span>
-    <span id="cfood-price">￥10</span>
-    <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="foodNumber -= 1" v-if="foodNumber > 0">
-    <span id="cfood-number" v-if="foodNumber > 0">{{ foodNumber }}</span>
-    <img src="@/assets/blue-add.png" id="cart-add" v-on:click="foodNumber += 1">
+  <mt-cell id="cart-cell" v-if="foodNum > 0">
+    <span id="cfood-name">{{ foodName }}</span>
+    <span id="cfood-price">￥{{ foodPrice * foodNum | currencydecimal }}</span>
+    <img src="@/assets/blue-minus.png" id="cart-minus" v-on:click="decreaseFood" v-if="foodNum> 0">
+    <span id="cfood-number" v-if="foodNum > 0">{{ foodNum }}</span>
+    <img src="@/assets/blue-add.png" id="cart-add" v-on:click="increaseFood">
   </mt-cell>
 </template>
 
 <script>
 export default {
+  name: 'CartCell',
   data () {
     return {
-      foodNumber: 1
+      foodID: this.id
+    }
+  },
+  filters: {
+    currencydecimal (value) {
+      return value.toFixed(2)
+    }
+  },
+  props: {
+    id: Number
+  },
+  computed: {
+    // 通过id获取菜品数据
+    food () {
+      return this.$store.getters.getGoodByID(this.id)
+    },
+    foodNum () {
+      return this.food.num
+    },
+    foodName () {
+      return this.food.name
+    },
+    foodPrice () {
+      return this.food.price
+    }
+  },
+  methods: {
+    // 减菜
+    decreaseFood () {
+      if (this.foodNum > 0) {
+        this.$store.commit('decreaseFood', {
+          foodPrice: this.foodPrice,
+          foodID: this.foodID
+        })
+      }
+    },
+    // 加菜
+    increaseFood () {
+      this.$store.commit('increaseFood', {
+        foodPrice: this.foodPrice,
+        foodID: this.foodID
+      })
     }
   }
 }
@@ -49,7 +91,7 @@ export default {
   #cfood-price{
     display: block;
     position: absolute;
-    left: 60vw;
+    left: 50vw;
     top: 5vw;
     color: black;
   }

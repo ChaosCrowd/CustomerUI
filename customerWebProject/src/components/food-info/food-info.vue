@@ -1,11 +1,11 @@
 <template>
   <div id="food-info">
-    <img src="@/assets/皮蛋瘦肉粥.jpeg" id="food-img">
+    <img :src="foodImgSrc" id="food-img">
     <img src="@/assets/back.png" id="back-img" @click="$router.go(-1)">
     <div id="info">
-      <p id="name">皮蛋瘦肉粥</p>
-      <p id="sell">月售888</p>
-      <p id="price">￥10</p>
+      <p id="name">{{ foodName }}</p>
+      <p id="sell">{{ foodVolume }}</p>
+      <p id="price">￥{{ foodPrice }}</p>
       <button id="add">加入购物车</button>
     </div>
     <div id="comment">
@@ -15,6 +15,37 @@
 </template>
 
 <script>
+export default {
+  data () {
+    return {
+      foodID: this.$route.params.fid
+    }
+  },
+  // 确保小数部分合理表示
+  filters: {
+    currencydecimal (value) {
+      return value.toFixed(2)
+    }
+  },
+  computed: {
+    // 通过id获取菜品数据
+    food () {
+      return this.$store.getters.getGoodByID(this.foodID)
+    },
+    foodName () {
+      return this.food.name
+    },
+    foodPrice () {
+      return this.food.price
+    },
+    foodImgSrc () {
+      return this.food.img_src
+    },
+    foodVolume () {
+      return '月售 ' + this.food.volume
+    }
+  }
+}
 </script>
 
 <style scope>

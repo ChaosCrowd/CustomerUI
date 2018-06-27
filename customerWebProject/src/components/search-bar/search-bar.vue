@@ -2,11 +2,16 @@
 <template>
   <mt-search
   class="search"
-  v-model="value"
   cancel-text=""
   placeholder="搜索">
   </mt-search>
 </template>
+
+<script>
+export default {
+  name: 'SearchBar'
+}
+</script>
 
 <style scope>
   /* 去除搜索框灰色边框和背景 */

@@ -7,6 +7,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'PageHeader'
+}
+</script>
+
 <style scope>
   .head {
     position: absolute;
