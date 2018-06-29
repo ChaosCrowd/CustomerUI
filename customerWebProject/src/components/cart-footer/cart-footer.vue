@@ -125,10 +125,12 @@ export default {
     position: absolute;
     left: 20vw;
     line-height: 12.8vw;
+    font-size: 5vw;
   }
   #cart-balance {
     line-height: 12.8vw;
     text-align: center;
+    font-size: 5vw;
   }
   #cart-button {
     position: absolute;

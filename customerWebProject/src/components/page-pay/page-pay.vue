@@ -1,14 +1,15 @@
 <!-- 结算页面 -->
 <template>
   <div id="page-pay">
-    <img src="@/assets/back4.png" v-on:click="goback" class="backButton">
+    <img src="@/assets/back4.png" v-on:click="goback" class="pay-backButton">
+    <p id="orderID-text" v-if="orderID !== 0">{{ orderIDText }}</p>
     <p id="selected-food">订单</p>
     <div id="pay-list">
       <mt-cell v-for="good in goodData" :key="good.id" v-bind:id="good.id" v-if="good.num > 0">
         <img :src="good.img_src" id="pfood-icon">
         <span id="pname">{{ good.name }}</span>
         <span id="pnum">{{ good.num }}</span>
-        <span id="pprice">￥{{ good.price }}</span>
+        <span id="pprice">￥{{ good.price | currencydecimal }}</span>
       </mt-cell>
     </div>
     <p id="pay-mention">{{ totalNumAndPrice }}</p>
@@ -26,10 +27,7 @@
       </div>
       <mt-field label="备注" class="remark" v-model="remarks"></mt-field>
     </div>
-    <div id="submit" v-on:click="uploadOrder">提交订单</div>
-    <mt-popup v-model="numflag" position="bottom">
-      <mt-picker :slots="slots1" id="numpicker" @change="onValuesChange"></mt-picker>
-    </mt-popup>
+    <div id="submit" :class="classObject" v-on:click="uploadOrder">{{ orderStateText }}</div>
     <mt-popup v-model="wayflag" position="bottom">
       <mt-picker :slots="slots2" id="numpicker" @change="onValuesChange"></mt-picker>
     </mt-popup>
@@ -37,16 +35,25 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
-      numflag: false,
       wayflag: false,
-      peoplenum: 1,
       remarks: '',
       payway: '现金支付',
-      slots1: [{values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}],
-      slots2: [{values: ['现金支付', '支付宝', '微信支付']}]
+      slots2: [{values: ['现金支付', '支付宝', '微信支付']}],
+      stateNum: 0,
+      stateText: ['提交订单', '正在提交...', '提交成功', '商家已接单', '订单已完成', '订单被拒', '商家未回应'],
+      orderID: 0,
+      // 轮询次数
+      pollingTime: 0
+    }
+  },
+  // 确保小数部分合理表示
+  filters: {
+    currencydecimal (value) {
+      return value.toFixed(2)
     }
   },
   computed: {
@@ -61,13 +68,28 @@ export default {
     // 桌号
     tableNumber: function () {
       return this.$store.state.tables_number
+    },
+    // state对应的订单状态
+    orderStateText: function () {
+      return this.stateText[this.stateNum]
+    },
+    // 显示订单号
+    orderIDText: function () {
+      return '订单号: ' + this.orderID
+    },
+    // 订单状态对应按钮颜色
+    // 按钮的颜色变化
+    classObject: function () {
+      return {
+        'yellow-button': this.stateNum === 0 || this.stateNum === 1 || this.stateNum === 2,
+        'red-button': this.stateNum === 5 || this.stateNum === 6,
+        'green-button': this.stateNum === 3 || this.stateNum === 4
+      }
     }
   },
   methods: {
     onValuesChange (picker, values) {
-      if (this.numflag) {
-        this.peoplenum = values[0]
-      } else if (this.wayflag) {
+      if (this.wayflag) {
         this.payway = values[0]
       }
     },
@@ -77,9 +99,86 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     },
-    // 上传订单
+    // 获取已经选择的菜品
+    getSelectedFood () {
+      var foods = []
+      for (var x in this.$store.state.goods) {
+        if (this.$store.state.goods[x].num > 0) {
+          var foodInfo = {
+            goods_id: this.$store.state.goods[x].id,
+            count: this.$store.state.goods[x].num
+          }
+          foods.push(foodInfo)
+        }
+      }
+      return foods
+    },
+    // 提交订单,获得订单的id
     uploadOrder () {
-      this.$store.dispatch('uploadOrder')
+      if (this.stateNum === 0) {
+        this.stateNum = 1
+        axios
+          .post('https://private-caa14-eatwelly.apiary-mock.com/api/v1/order', {
+            tables_number: this.$store.state.tables_number,
+            timestamp: Date.now(),
+            order: this.getSelectedFood()
+          })
+          .then(response => {
+            this.stateNum = 2
+            this.orderID = response.data.data.order_id
+            console.log(this.orderID)
+            var self = this
+            // 开始轮询
+            var polling = setInterval(function () {
+              self.pollForState()
+              // 商家接单,停止轮询
+              if (self.stateNum === 3 || self.stateNum === 4) {
+                console.log('商家接单,停止轮询')
+                self.$toast({
+                  message: '商家已接单,请静候美食',
+                  iconClass: 'mint-toast-icon mintui mintui-success'
+                })
+                clearInterval(polling)
+              }
+              // 商家拒单,停止轮询
+              if (self.stateNum === 5) {
+                console.log('商家拒单,停止轮询')
+                clearInterval(polling)
+                self.$toast('商家拒单,小二将与您联系')
+              }
+              // 轮询次数达到600次则因超时终止
+              if (self.pollingTime >= 600) {
+                self.stateNum = 6
+                console.log('超时,停止轮询')
+                clearInterval(polling)
+                self.$toast('商家未回应,小二将与您联系')
+              }
+            }, 1000)
+          })
+          .catch(err => console.error(err))
+      }
+    },
+    // 获取订单的状态
+    pollForState () {
+      console.log('发送一次轮询')
+      axios
+        .get('https://private-caa14-eatwelly.apiary-mock.com/api/v1/orderStatus?orderID=' + String(this.orderID))
+        .then(response => {
+          if (this.stateNum < response.data.data.status) {
+            this.stateNum = response.data.data.status
+          }
+          this.pollingTime += 1
+          console.log('Order state:', this.stateText[this.stateNum])
+        })
+        .catch(err => console.error(err))
+    }
+  },
+  // 生命周期钩子,如果没有state,则从本地载入
+  mounted: function () {
+    if (this.$store.state.goods.length === 0 &&
+    window.sessionStorage.getItem('state')) {
+      this.$store.dispatch('loadLocalState',
+        JSON.parse(window.sessionStorage.getItem('state')))
     }
   }
 }
@@ -95,6 +194,30 @@ export default {
   color: #2c3e50;
   overflow-y: auto;
   background-color: white;
+}
+#orderID-text {
+  position: absolute;
+  top: 1vw;
+  left: 35vw;
+  margin: 0;
+  font-size: 5vw;
+  height: 10vw;
+  line-height: 10vw;
+  font-weight: bold;
+}
+.icon-success {
+  background-color: green;
+  background-image: url('../../assets/gray-cart.png');
+  background-size: 100%;
+}
+.yellow-button {
+  background-color: orange;
+}
+.red-button {
+  background-color: #CC3300;
+}
+.green-button {
+  background-color: rgb(139, 195, 74);
 }
 #page-pay .mint-cell {
   height: 15vw;
@@ -121,6 +244,7 @@ export default {
   background-color: #3399CC;
   border-radius: 0 5vw 5vw 0;
   font-size: 5vw;
+  line-height: 10vw;
 }
 #pay-overview {
   margin: 0;
@@ -132,6 +256,7 @@ export default {
   background-color: #FF6666;
   border-radius: 0 5vw 5vw 0;
   font-size: 5vw;
+  line-height: 10vw;
 }
 #pay-mention {
   position: absolute;
@@ -150,7 +275,7 @@ export default {
   filter:alpha(opacity=70);
   opacity:0.7;
 }
-#page-pay .backButton {
+#page-pay .pay-backButton {
   position: absolute;
   top: 0;
   left: 0;
@@ -176,13 +301,14 @@ export default {
   overflow-y: auto;
 }
 .pay-info .mint-cell-text {
-    display: block;
-    margin-left: 10vw;
-    text-align: left;
-  }
+  display: block;
+  margin-left: 10vw;
+  text-align: left;
+  font-size: 5vw;
+}
 #submit {
   position: absolute;
-  bottom: 8vw;
+  top: 150vw;
   width: 50vw;
   height: 10vw;
   color: black;
@@ -191,7 +317,6 @@ export default {
   font-size: 6vw;
   border-radius: 4vw;
   left: 25vw;
-  background-color: orange;
 }
 #numpicker {
   position: fixed;
@@ -220,17 +345,20 @@ export default {
   top: 5vw;
   left: 20vw;
   color: #2c3e50;
+  font-size: 4vw;
 }
 #pnum {
   position: absolute;
   top: 5vw;
   left: 60vw;
   color: #2c3e50;
+  font-size: 4vw;
 }
 #pprice {
   position: absolute;
   top: 5vw;
   right: 4vw;
   color: #2c3e50;
+  font-size: 4vw;
 }
 </style>

@@ -83,6 +83,14 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     }
+  },
+  // 生命周期钩子,如果没有state,则从本地载入
+  mounted: function () {
+    if (this.$store.state.goods.length === 0 &&
+    window.sessionStorage.getItem('state')) {
+      this.$store.dispatch('loadLocalState',
+        JSON.parse(window.sessionStorage.getItem('state')))
+    }
   }
 }
 </script>

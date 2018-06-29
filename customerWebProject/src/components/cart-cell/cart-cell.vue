@@ -72,7 +72,7 @@ export default {
     position: absolute;
     right: 18.5vw;
     margin: auto;
-    bottom: 5vw;
+    top: 3vw;
   }
   #cart-cell #cart-add {
     width: 6vw;
@@ -80,7 +80,7 @@ export default {
     position: absolute;
     right: 2.5vw;
     margin: auto;
-    bottom: 5vw;
+    top: 3vw;
   }
   #cart-cell #cfood-name{
     display: block;
@@ -88,6 +88,7 @@ export default {
     left: 6vw;
     top: 5vw;
     color: black;
+    font-size: 5vw;
   }
   #cart-cell #cfood-price{
     display: block;
@@ -95,6 +96,7 @@ export default {
     left: 50vw;
     top: 5vw;
     color: black;
+    font-size: 5vw;
   }
   #cart-cell #cfood-number {
     display: block;
@@ -103,6 +105,7 @@ export default {
     text-align: center;
     color: #2c3e50;
     right: 8.5vw;
-    bottom: 5vw;
+    top: 5vw;
+    font-size: 5vw;
   }
 </style>

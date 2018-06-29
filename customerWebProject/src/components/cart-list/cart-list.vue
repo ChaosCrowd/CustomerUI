@@ -1,13 +1,18 @@
+<!-- 购物车详情 -->
 <template>
   <div id="cart-list">
     <div id="cart-title">
       <div id="cart-text">已选择</div>
-      <img src="@/assets/trash.svg" id="trash-icon">
-      <div id="clear-botton" @click="clearFood">清空购物车</div>
+      <div id="clear-botton" @click="clearFood">
+        <img src="@/assets/trash.svg" id="trash-icon">
+        <p id="clear-text">清空购物车</p>
+      </div>
     </div>
     <div id="cell-list">
       <cart-cell v-for="good in goodData" :key="good.id" v-bind:id="good.id"></cart-cell>
     </div>
+    <!-- 垫高已选菜品的列表,防止被购物车图标遮住 -->
+    <div id="cart-footer"></div>
   </div>
 </template>
 
@@ -48,6 +53,10 @@ export default {
   max-height: 25vh;
   overflow-y: auto;
 }
+#cart-footer {
+  width: 100vw;
+  height: 4vw;
+}
 #cart-text {
   width: 75%;
   float: left;
@@ -59,5 +68,9 @@ export default {
   color: white;
   color: black;
   font-size: 4vw;
+}
+#clear-text {
+  margin: 0;
+  padding: 0;
 }
 </style>

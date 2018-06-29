@@ -3,13 +3,13 @@
   <div class="shop">
     <p class="welcome-text">{{ welcomeText }}</p>
     <mt-cell :title="shopInfo" class="shopInfo">
-      <img slot="icon" src="@/assets/info5.svg" width="24" height="24">
+      <img slot="icon" src="@/assets/info5.svg" class="shop-info-icon">
     </mt-cell>
     <mt-cell :title="shopAddress" class="shopAddress">
-      <img slot="icon" src="@/assets/address5.svg" width="24" height="24">
+      <img slot="icon" src="@/assets/address5.svg" class="shop-info-icon">
     </mt-cell>
     <mt-cell :title="shopPhone" class="shopPhone">
-      <img slot="icon" src="@/assets/phone5.svg" width="24" height="24">
+      <img slot="icon" src="@/assets/phone5.svg" class="shop-info-icon">
     </mt-cell>
   </div>
 </template>
@@ -38,9 +38,6 @@ export default {
 </script>
 
 <style scoped>
-  .shop .mint-cell-text {
-    font-size: 5vw;
-  }
   .welcome-text {
     font-size: 5vw;
     margin-top: 5vw;
@@ -50,9 +47,19 @@ export default {
     font-weight: bold;
   }
   .shop .mint-cell {
-    text-align: left
+    text-align: left;
+    font-size: 5vw !important;
   }
   .shopInfo {
     font-size: 5vw;
+  }
+  /* 小图标样式 */
+  .shop-info-icon {
+    width: 8vw;
+    height: 8vw;
+  }
+  .shop-info-text {
+    font-size: 5vw;
+    color: #2c3e50;
   }
 </style>

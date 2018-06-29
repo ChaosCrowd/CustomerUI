@@ -53,6 +53,10 @@ export default {
         this.$indicator.close()
       }
     }
+  },
+  // 销毁之前,将状态保存到本地
+  beforeDestroy: function () {
+    window.sessionStorage.setItem('state', JSON.stringify(this.$store.state))
   }
 }
 </script>

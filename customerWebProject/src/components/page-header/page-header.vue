@@ -34,18 +34,18 @@ export default {
   }
   #restaurant-icon {
     position: absolute;
-    width: 25vw;
-    height: 25vw;
-    top: 4vw;
-    left: 4vw;
+    width: 14vh;
+    height: 14vh;
+    top: 3vh;
+    left: 3vh;
     background-size: 100%;
     background-position: center;
   }
   #restaurant-name {
     position: absolute;
     color: white;
-    left: 35vw;
-    top: 10vw;
+    left: 20vh;
+    top: 6vh;
     font-weight: bold;
     font-size: 6vw;
   }

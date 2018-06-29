@@ -1,7 +1,7 @@
 <!-- 搜索页面 -->
 <template>
   <div class="search-real">
-    <img src="@/assets/back4.png" v-on:click="goback" class="backButton">
+    <img src="@/assets/back4.png" v-on:click="goback" class="search-backButton">
     <mt-search
     v-model="value"
     class="search"
@@ -40,6 +40,14 @@ export default {
         ? this.$router.go(-1)
         : this.$router.push('/')
     }
+  },
+  // 生命周期钩子
+  mounted: function () {
+    if (this.$store.state.goods.length === 0 &&
+    window.sessionStorage.getItem('state')) {
+      this.$store.dispatch('loadLocalState',
+        JSON.parse(window.sessionStorage.getItem('state')))
+    }
   }
 }
 </script>
@@ -72,7 +80,7 @@ export default {
   }
   /* 输入框内部高度 */
   .search .mint-searchbar-inner {
-    /* height: 10vh; */
+    height: 7vw;
     padding: 0;
   }
   /* 使搜索栏置顶 */
@@ -93,7 +101,7 @@ export default {
     height: 100%;
   }
   /* 返回按钮置于左上角 */
-  .backButton {
+  .search-backButton {
     z-index: 1;
     position: absolute;
     background: white;
@@ -101,5 +109,17 @@ export default {
     height: 12vw;
     top: 1vw;
     left: 0;
+  }
+  /* 放大镜图标 */
+  .search-real .mint-searchbar-inner .mintui-search {
+    font-size: 5vw;
+  }
+  /* 搜索字样的大小 */
+  .search-real .mint-searchbar-core {
+    font-size: 4vw;
+  }
+  /* 将底部栏的fixed改为absolute,解决输入法导致底部栏上移问题 */
+  .search-real #bottom-bar {
+    position: absolute;
   }
 </style>

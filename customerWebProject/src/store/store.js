@@ -4,7 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const routeBase = 'http://139.199.71.21:8080'
+const baseUrl = 'http://139.199.71.21:8080/ordering'
+// const baseUrl = 'https://private-caa14-eatwelly.apiary-mock.com'
 const store = new Vuex.Store({
   state: {
     // 桌号
@@ -37,12 +38,14 @@ const store = new Vuex.Store({
       state.totalNum += 1
       state.totalPrice += payload.foodPrice
       state.goods.find(good => good.id === payload.foodID).num += 1
+      window.sessionStorage.setItem('state', JSON.stringify(state))
     },
     // 减少某样菜
     decreaseFood (state, payload) {
       state.totalNum -= 1
       state.totalPrice -= payload.foodPrice
       state.goods.find(good => good.id === payload.foodID).num -= 1
+      window.sessionStorage.setItem('state', JSON.stringify(state))
     },
     // 根据菜单数据建立菜品集合，便于实现菜品数量的监控和数据获取
     initMenuAndGoods (state, payload) {
@@ -75,6 +78,7 @@ const store = new Vuex.Store({
       for (var i in state.goods) {
         state.goods[i].num = 0
       }
+      window.sessionStorage.setItem('state', JSON.stringify(state))
     },
     // 用获取的信息初始化商家信息shop
     initShop (state, payload) {
@@ -83,50 +87,37 @@ const store = new Vuex.Store({
     // 设置桌号
     setTableNum (state, payload) {
       state.tables_number = payload.tableID
+    },
+    // 从本地载入state
+    loadLocalState (state, payload) {
+      state.tables_number = payload.tables_number
+      state.totalPrice = payload.totalPrice
+      state.totalNum = payload.totalNum
+      state.menu = payload.menu
+      state.goods = payload.goods
+      state.shop = payload.shop
     }
   },
   actions: {
     // 获取菜单数据，未处理异常情况
     getMenu (context) {
       axios
-        .get(routeBase + '/ordering/api/v1/menu')
+        .get(baseUrl + '/api/v1/menu')
         .then(response => (context.commit('initMenuAndGoods', {
           msg: response.data.msg,
           menu: response.data.data
         })))
-        .catch(error => console.log(error))
+        .catch(err => console.error(err))
     },
     // 获取商家信息
     getShop (context) {
       axios
-        .get(routeBase + '/ordering/api/v1/shop')
+        .get(baseUrl + '/api/v1/shop')
         .then(response => (context.commit('initShop', {
           msg: response.data.msg,
           shop: response.data.data
         })))
-        .catch(error => console.log(error))
-    },
-    // 提交订单, 未处理异常情况，可能不应该写在这里吧。。
-    uploadOrder (context) {
-      console.log('start uploading')
-      var foods = []
-      for (var x in context.state.goods) {
-        if (context.state.goods[x].num > 0) {
-          var foodInfo = {
-            goods_id: context.state.goods[x].id,
-            count: context.state.goods[x].num
-          }
-          foods.push(foodInfo)
-        }
-      }
-      axios
-        .post(routeBase + '/ordering/api/v1/order', {
-          tables_number: context.state.tables_number,
-          timestamp: Date.now(),
-          order: foods
-        })
-        .then(response => console.log(response.data))
-        .catch(error => console.log(error))
+        .catch(err => console.error(err))
     },
     // 添加某样菜
     increaseFood (context, payload) {
@@ -143,6 +134,10 @@ const store = new Vuex.Store({
     // 设置桌号
     setTableNum (context, payload) {
       context.commit('setTableNum', payload)
+    },
+    // 从本地载入state
+    loadLocalState (context, payload) {
+      context.commit('loadLocalState', payload)
     }
   }
 })
