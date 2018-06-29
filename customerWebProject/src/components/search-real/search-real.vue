@@ -104,7 +104,6 @@ export default {
   .search-backButton {
     z-index: 1;
     position: absolute;
-    background: white;
     width: 12vw;
     height: 12vw;
     top: 1vw;
@@ -117,9 +116,5 @@ export default {
   /* 搜索字样的大小 */
   .search-real .mint-searchbar-core {
     font-size: 4vw;
-  }
-  /* 将底部栏的fixed改为absolute,解决输入法导致底部栏上移问题 */
-  .search-real #bottom-bar {
-    position: absolute;
   }
 </style>

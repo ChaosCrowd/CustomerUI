@@ -22,5 +22,6 @@ export default {
 /* 消除边缘margin */
 body {
   margin: 0;
+  background-color: #FFFFF0;
 }
 </style>
