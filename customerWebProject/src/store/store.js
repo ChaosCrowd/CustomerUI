@@ -4,8 +4,8 @@ import axios from 'axios'
 
 Vue.use(Vuex)
 
-const baseUrl = 'http://139.199.71.21:8080/ordering'
-// const baseUrl = 'https://private-caa14-eatwelly.apiary-mock.com'
+// const baseUrl = 'http://139.199.71.21:8080/ordering'
+const baseUrl = 'https://private-caa14-eatwelly.apiary-mock.com'
 const store = new Vuex.Store({
   state: {
     // 桌号

@@ -1,6 +1,6 @@
 <!-- 餐厅首页 -->
 <template>
-    <div>
+    <div class="restaurant-home">
         <!-- 头部 -->
         <page-header></page-header>
         <!-- 搜索框 -->
@@ -39,7 +39,7 @@ export default {
     this.$store.dispatch('getMenu')
     // 设置桌号
     this.$store.dispatch('setTableNum', {
-      tableID: this.$route.params.tableID
+      tableID: Number(this.$route.params.tableID)
     })
   },
   watch: {

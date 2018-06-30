@@ -7,12 +7,12 @@
   </mt-navbar>
   <!-- 设置每个tab对应的内容 -->
   <mt-tab-container v-model="selected">
-    <mt-tab-container-item id="1">
+    <mt-tab-container-item id="1" class="food-list-container">
       <food-list></food-list>
       <!-- 购物车，总价及结算按钮 -->
       <cart-footer></cart-footer>
     </mt-tab-container-item>
-    <mt-tab-container-item id="2">
+    <mt-tab-container-item id="2" class="shop-info-container">
       <shop-info></shop-info>
     </mt-tab-container-item>
   </mt-tab-container>
@@ -54,12 +54,20 @@ export default {
   }
   /* 选项卡对应内容窗口大小 */
   .shop-tab .mint-indexlist {
-    height: 63vh;
+    height: 82.5vh;
   }
   /* 选项卡被选中时不显示蓝色底边 */
   .shop-tab .mint-navbar .mint-tab-item.is-selected {
     border-bottom: none;
     color: #2c3e50;
     font-weight: bold;
+  }
+  /* 商家信息板块的高度 */
+  .shop-tab .shop-info-container {
+    height: 90vh;
+  }
+  /* 菜单列表的高度 */
+  .shop-tab .food-list-container {
+    height: 90vh;
   }
 </style>

@@ -22,7 +22,7 @@ import cartFooter from '@/components/cart-footer/cart-footer'
 export default {
   data () {
     return {
-      foodID: this.$route.params.fid,
+      foodID: Number(this.$route.params.fid),
       descText: '菜品描述',
       cartText: '加入购物车'
     }

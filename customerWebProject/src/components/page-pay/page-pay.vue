@@ -125,7 +125,7 @@ export default {
       if (this.stateNum === 0) {
         this.stateNum = 1
         axios
-          .post('http://139.199.71.21:8080/ordering/api/v1/order', {
+          .post('https://private-caa14-eatwelly.apiary-mock.com/api/v1/order', {
             tables_number: this.$store.state.tables_number,
             timestamp: Date.now(),
             order: this.getSelectedFood()
@@ -189,7 +189,7 @@ export default {
       console.log('发送一次轮询')
       this.pollingTime += 1
       axios
-        .get('http://139.199.71.21:8080/ordering/api/v1/orderStatus?orderID=' + String(this.orderID))
+        .get('https://private-caa14-eatwelly.apiary-mock.com/api/v1/orderStatus?orderID=' + String(this.orderID))
         .then(response => {
           if (this.stateNum < response.data.data.status + 1) {
             this.stateNum = response.data.data.status + 1
